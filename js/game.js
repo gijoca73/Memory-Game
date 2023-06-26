@@ -1,9 +1,11 @@
 // pega o grid para colocar elementos dinamicamente dentro dele
 const grid = document.querySelector('.grid')
-
+// chama o elemento que contém a classe "player" para poder colocar informação dentro dele
 const spanPlayer = document.querySelector('.player')
+// chama o elemento que contém a classe "timer" para poder colocar informação dentro dele
 const timer = document.querySelector('.timer')
 
+// variável responsável pela contagem de erros
 let count = 0;
 
 const characters = [
@@ -22,23 +24,26 @@ const createElement = (tag, className) => {
 let firstCard = '';
 let secondCard = '';
 
+// verificador de fim de jogo
 const checkEndGame = () => {
+    // conta quantas cartas foram reveladas
     const disabledCards = document.querySelectorAll('.disabled-card');
 
+    // caso todas as cartas sejam reveladas isso dá a vitória ao jogador
     if (disabledCards.length === 24) {
         clearInterval(this.loop);
         setTimeout(() => {
             alert(`Parabéns, ${spanPlayer.innerHTML}! Seu tempo foi de: ${timer.innerHTML}`);
         }, 500)
-
     }
-
 }
 
+// verifica quais são as duas cartas viradas pelo player
 const checkCards = () => {
     const firstCharacter = firstCard.getAttribute('data-character');
     const secondCharacter = secondCard.getAttribute('data-character');
 
+    // se as duas cartas viradas forem iguais, elas recebem o atributo que deixa ela desativada
     if (firstCharacter == secondCharacter) {
         firstCard.firstChild.classList.add('disabled-card');
         secondCard.firstChild.classList.add('disabled-card');
@@ -46,8 +51,10 @@ const checkCards = () => {
         firstCard = '';
         secondCard = '';
 
+        // chamada da função que verifica se é o fim da partida
         checkEndGame();
     } else {
+        // caso as cartas selecionadas sejam diferentes, é contabilizado mais um erro e as cartas voltam ao estado antes de selecionas
         count = count + 1;
         console.log(count)
         setTimeout(() => {
@@ -57,6 +64,7 @@ const checkCards = () => {
             firstCard = '';
             secondCard = '';
 
+            // caso o número de erros chegue em 3, irá aparecer a mensagem de game over
             if (count >= 3) {
                 alert(`Ops, ${spanPlayer.innerHTML} perdeu! Seu tempo foi de: ${timer.innerHTML}`)
 
@@ -101,7 +109,7 @@ const createCard = (character) => {
 
     setTimeout(() => {
         card.className = 'card';
-    }, 5500);
+    }, 5000);
 
     return card;
 }
@@ -124,6 +132,7 @@ const startTimer = () => {
     this.loop = setInterval(() => {
 
         const currentTimer = +timer.innerHTML; // '+' força a string se tornar um número
+        // soma 1 a cada segundo que se passa
         timer.innerHTML = currentTimer + 1;
 
     }, 1000);
@@ -131,7 +140,9 @@ const startTimer = () => {
 
 window.onload = () => {
 
+    // atribui o valor guardado no local storage à spanPlayer
     spanPlayer.innerHTML = localStorage.getItem('player');
+    // chamada das funções que iniciam a contagem de tempo e o embaralhamento de cartas
     startTimer();
     loadGame();
 }
