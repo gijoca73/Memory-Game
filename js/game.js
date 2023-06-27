@@ -74,20 +74,22 @@ const checkCards = () => {
 
     }
 };
-
-
+// função que revela a carta quando clicada
 const revealCard = ({ target }) => {
+// verifica se determinada classe está presente na carta
     if (target.parentNode.className.includes('reveal-card')) {
         return;
     }
 
+    // se a varável estiver vazia, irá adicionar a classe necessária para a carta ser revelada
     if (firstCard === '') {
         target.parentNode.classList.add('reveal-card')
         firstCard = target.parentNode;
     } else if (secondCard === '') {
         target.parentNode.classList.add('reveal-card')
         secondCard = target.parentNode;
-
+    
+    // chamada da função que verifica quais foram as cartas clicadas pelo player
         checkCards();
     }
 }
@@ -104,6 +106,7 @@ const createCard = (character) => {
     card.appendChild(front);
     card.appendChild(back);
 
+    // quando uma carta é clicada, acontece a chamada da função que revela a carta
     card.addEventListener('click', revealCard)
     card.setAttribute('data-character', character)
 
